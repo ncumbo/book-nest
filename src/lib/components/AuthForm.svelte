@@ -13,22 +13,42 @@
 <div class="default-margin auth-container">
   <h1 class="mb-l">{isRegistration ? "Register" : "Login"}</h1>
   <div class="form-and-social-login">
-    <form class="auth-form" method="POST">
+    <form
+      class="auth-form"
+      method="POST"
+      action={isRegistration ? "" : "/login/?/signInWithPassword"}
+    >
       {#if form && form.errors?.length}
         {#each form.errors as error}
           <div class="auth-error"><p>{error}</p></div>{/each}
         <h2>{form.message}</h2>
       {/if}
       {#if isRegistration}
-        <input placeholder="Name" type="text" name="name" />
+        <input
+          placeholder="Name"
+          type="text"
+          name="name"
+          value={form?.name || ""}
+        />
       {/if}
-      <input placeholder="Email" type="text" name="email" />
-      <input placeholder="Password" type="password" name="password" />
+      <input
+        placeholder="Email"
+        type="text"
+        name="email"
+        value={form?.email || ""}
+      />
+      <input
+        placeholder="Password"
+        type="password"
+        name="password"
+        value={form?.password || ""}
+      />
       {#if isRegistration}
         <input
           placeholder="Confirm password"
           type="password"
           name="passwordConfirmation"
+          value={form?.passwordConfirmation || ""}
         />
       {/if}
       <Button type="submit">{isRegistration ? "Register" : "Login"}</Button>
@@ -43,7 +63,12 @@
       {/if}
     </form>
     <div class="social-login">
-      <!-- // add button here later -->
+      <form
+        method="POST"
+        action={isRegistration ? "/login/?/googleLogin" : "?/googleLogin"}
+      >
+        <Button type="submit">Log in using Google</Button>
+      </form>
     </div>
   </div>
 </div>
