@@ -11,7 +11,6 @@ interface ReturnObject {
 
 export const actions = {
   default: async ({ request, locals: { supabase } }) => {
-    // going to do something with the given event
     const formData = await request.formData();
 
     const name = formData.get("name") as string;
@@ -21,27 +20,29 @@ export const actions = {
 
     const returnObject: ReturnObject = {
       success: true,
-      name,
       email,
+      name,
       password,
       passwordConfirmation,
       errors: [],
     };
 
     if (name.length < 3) {
-      returnObject.errors.push("Name has to be at least 3 characters");
+      returnObject.errors.push(
+        "Name has to be at least of length 3 characters."
+      );
     }
 
     if (!email.length) {
-      returnObject.errors.push("Email is required");
+      returnObject.errors.push("Email is required.");
     }
 
     if (!password.length) {
-      returnObject.errors.push("Password is required");
+      returnObject.errors.push("Password is required.");
     }
 
     if (password !== passwordConfirmation) {
-      returnObject.errors.push("Passwords do not match");
+      returnObject.errors.push("Passwords do not match.");
     }
 
     if (returnObject.errors.length) {
@@ -49,6 +50,7 @@ export const actions = {
       return returnObject;
     }
 
+    // Registration flow.
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -60,6 +62,14 @@ export const actions = {
       returnObject.success = false;
       return fail(400, returnObject as any);
     }
+
+    const userId = data.user.id;
+    await supabase.from("user_names").insert([
+      {
+        user_id: userId,
+        name,
+      },
+    ]);
 
     redirect(303, "/private/dashboard");
   },

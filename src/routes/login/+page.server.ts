@@ -12,7 +12,6 @@ interface ReturnObject {
 
 export const actions = {
   signInWithPassword: async ({ request, locals: { supabase } }) => {
-    // going to do something with the given event
     const formData = await request.formData();
 
     const email = formData.get("email") as string;
@@ -26,11 +25,11 @@ export const actions = {
     };
 
     if (!email.length) {
-      returnObject.errors.push("Email is required");
+      returnObject.errors.push("Email is required.");
     }
 
     if (!password.length) {
-      returnObject.errors.push("Password is required");
+      returnObject.errors.push("Password is required.");
     }
 
     if (returnObject.errors.length) {

@@ -6,6 +6,7 @@ import {
   PUBLIC_SUPABASE_URL,
   PUBLIC_SUPABASE_ANON_KEY,
 } from "$env/static/public";
+import type { Database } from "$lib/types/database.types";
 
 const supabase: Handle = async ({ event, resolve }) => {
   /**
@@ -13,7 +14,7 @@ const supabase: Handle = async ({ event, resolve }) => {
    *
    * The Supabase client gets the Auth token from the request cookies.
    */
-  event.locals.supabase = createServerClient(
+  event.locals.supabase = createServerClient<Database>(
     PUBLIC_SUPABASE_URL,
     PUBLIC_SUPABASE_ANON_KEY,
     {
@@ -78,10 +79,7 @@ const authGuard: Handle = async ({ event, resolve }) => {
     redirect(303, "/login");
   }
 
-  if (
-    event.locals.session &&
-    ["/register", "/login"].includes(event.url.pathname)
-  ) {
+  if (event.locals.session && !event.url.pathname.startsWith("/private")) {
     redirect(303, "/private/dashboard");
   }
 

@@ -20,8 +20,10 @@
     >
       {#if form && form.errors?.length}
         {#each form.errors as error}
-          <div class="auth-error"><p>{error}</p></div>{/each}
-        <h2>{form.message}</h2>
+          <div class="auth-error">
+            <p>{error}</p>
+          </div>
+        {/each}
       {/if}
       {#if isRegistration}
         <input
@@ -58,7 +60,7 @@
         </p>
       {:else}
         <p class="auth-hint mt-s">
-          Do not have an account yet? <a href="/register">Register.</a>
+          Do not have an account yet? <a href="/register">Log In.</a>
         </p>
       {/if}
     </form>
@@ -77,6 +79,7 @@
   .auth-container {
     margin-top: 80px;
   }
+
   .form-and-social-login {
     display: flex;
   }
@@ -88,10 +91,6 @@
     border-right: 1px solid grey;
     padding-right: 80px;
     width: 40%;
-  }
-  .auth-form input {
-    width: 100%;
-    margin-bottom: 12px;
   }
 
   .auth-hint {
@@ -108,6 +107,7 @@
     width: 100%;
     margin-bottom: 8px;
   }
+
   .auth-error:last-of-type {
     margin-bottom: 16px;
   }
